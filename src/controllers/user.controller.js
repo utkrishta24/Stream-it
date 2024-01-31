@@ -1,7 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudniary } from "../utils/cloudinary.js";
+import {
+  uploadOnCloudniary,
+  deletefromCloudinary,
+} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
@@ -233,7 +236,7 @@ const changeAccountPassword = asyncHandler(async (req, res) => {
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
-    .json(200, req.user, "current user fetched successfully");
+    .json(new ApiResponse(200, req.user, "current user fetched successfully"));
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
@@ -261,6 +264,21 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is missing");
   }
+
+  const userWithOldAvatar = await User.findById(req.user?._id).select("avatar");
+
+  if (!userWithOldAvatar) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if (userWithOldAvatar.avatar) {
+    const oldAvatarPublicId = userWithOldAvatar.avatar
+      .split("/")
+      .pop()
+      .split(".")[0];
+    await deletefromCloudinary(oldAvatarPublicId);
+  }
+
   const avatar = awaituploadOnCloudniary(avatarLocalPath);
   if (!avatar.url) {
     throw new ApiError(400, "Error while uploading the avatar");
