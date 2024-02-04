@@ -1,0 +1,6 @@
+TODO: playlist
+TODO: comments
+TODO: likes
+TODO: tweets
+TODO: video uploading
+TODO: controllers
