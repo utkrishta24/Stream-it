@@ -1,6 +1,18 @@
-TODO: playlist
-TODO: comments
-TODO: likes
-TODO: tweets
-TODO: video uploading
-TODO: controllers
+TODO: video controller
+TODO: comment controller
+TODO: dashboard controller
+TODO: healthcheck controller
+TODO: like controller
+TODO: playlist controller
+TODO: subscription controller
+TODO: tweet controller
+
+TODO: routes
+
+TODO: getAllVideo
+TODO: publishVideo
+TODO: getVideoById
+TODO: updateVideo
+TODO: deleteVideo
+TODO: deleteVideo
+
